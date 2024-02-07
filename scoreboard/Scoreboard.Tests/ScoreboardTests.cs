@@ -30,7 +30,7 @@ namespace Scoreboard.Tests
             }
 
             [Theory, AutoData]
-            public void CreateMAtch_Creates_Match_Ok(string homeTeamName, string awayTeamName)
+            public void CreateMatch_Creates_Match_Ok(string homeTeamName, string awayTeamName)
             {
                 // Arrange
                 // Act
@@ -55,7 +55,7 @@ namespace Scoreboard.Tests
                 // Assert
                 using ( new AssertionScope())
                 {
-                    action.Should().Throw<ArgumentException>()
+                    action.Should().Throw<ArgumentNullException>()
                         .WithMessage("homeTeamName cannot be null or empty");
                 }
             }
@@ -71,7 +71,7 @@ namespace Scoreboard.Tests
                 // Assert
                 using (new AssertionScope())
                 {
-                    action.Should().Throw<ArgumentException>()
+                    action.Should().Throw<ArgumentNullException>()
                         .WithMessage("awayTeamName cannot be null or empty");
                 }
             }
