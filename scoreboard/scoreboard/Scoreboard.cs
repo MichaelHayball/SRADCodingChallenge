@@ -38,7 +38,28 @@ namespace Scoreboard
 
         public bool UpdateScore(string homeTeamName, int homeTeamScore, string awayTeamName, int awayTeamScore)
         {
-            throw new NotImplementedException();
+            if (homeTeamScore < 0) 
+                throw new ArgumentOutOfRangeException(nameof(homeTeamScore), "Scores cannot be negative");
+            if (awayTeamScore < 0)
+                throw new ArgumentOutOfRangeException(nameof(homeTeamScore), "Scores cannot be negative");
+
+            var match = matches.FirstOrDefault(x => x.homeTeamName == homeTeamName && x.awayTeamName == awayTeamName);
+
+            if (match is null)
+            {
+                throw new ArgumentException("Match Not Found");
+            }
+
+            if (homeTeamScore < match.homeTeamScore)
+                throw new ArgumentOutOfRangeException(nameof(homeTeamScore) , "Scores cannot be decreased");
+            if (awayTeamScore < match.awayTeamScore)
+                throw new ArgumentOutOfRangeException(nameof(awayTeamScore), "Scores cannot be decreased");
+
+            match.homeTeamScore = homeTeamScore;
+            match.awayTeamScore = awayTeamScore;
+
+            return true;
+
         }
 
         public bool FinishMatch(string homeTeamName, string awayTeamName)

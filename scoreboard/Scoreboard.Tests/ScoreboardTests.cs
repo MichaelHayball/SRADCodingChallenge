@@ -174,12 +174,12 @@ namespace Scoreboard.Tests
                 _objectToTest.CreateMatch(homeTeamName, awayTeamName);
 
                 // Act
-                var action = () => _objectToTest.UpdateScore(awayTeamName, -1, awayTeamName, 0);
+                var action = () => _objectToTest.UpdateScore(homeTeamName, -1, awayTeamName, 0);
 
                 // Assert
                 using (new AssertionScope())
                 {
-                    action.Should().Throw<ArgumentException>().WithMessage("Scores cannot Be Negative");
+                    action.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Scores cannot be negative (Parameter 'homeTeamScore')");
                 }
             }
 
@@ -191,12 +191,12 @@ namespace Scoreboard.Tests
                 _objectToTest.UpdateScore(homeTeamName, 1, awayTeamName, 0);
 
                 // Act
-                var action = () => _objectToTest.UpdateScore(awayTeamName, 0, awayTeamName, 0);
+                var action = () => _objectToTest.UpdateScore(homeTeamName, 0, awayTeamName, 0);
 
                 // Assert
                 using (new AssertionScope())
                 {
-                    action.Should().Throw<ArgumentException>().WithMessage("Scores Cannot be decreased");
+                    action.Should().Throw<ArgumentOutOfRangeException>().WithMessage("Scores cannot be decreased (Parameter 'homeTeamScore')");
                 }
             }
         }
