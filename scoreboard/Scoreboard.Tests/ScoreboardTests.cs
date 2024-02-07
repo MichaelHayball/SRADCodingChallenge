@@ -156,8 +156,6 @@ namespace Scoreboard.Tests
             public void UpdateMatch_Throws_ArgumentException_When_Match_Not_Found(string homeTeamName, string awayTeamName)
             {
                 // Arrange
-                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
-
                 // Act
                 var action = () => _objectToTest.UpdateScore(awayTeamName, 1, awayTeamName, 0);
 
