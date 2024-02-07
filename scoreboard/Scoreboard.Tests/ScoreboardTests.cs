@@ -258,7 +258,7 @@ namespace Scoreboard.Tests
                     result.Should().NotBeNullOrWhiteSpace();
                     result.Should().Contain(homeTeamName);
                     result.Should().Contain(awayTeamName);
-                    result.Should().Be($"{homeTeamName} {1} - {awayTeamName} {awayTeamScore}{Environment.NewLine}");
+                    result.Should().Be($"1. {homeTeamName} {homeTeamScore} - {awayTeamName} {awayTeamScore}{Environment.NewLine}");
                 }
             }
 
@@ -285,8 +285,8 @@ namespace Scoreboard.Tests
                     result.Should().Contain(homeTeamName1);
                     result.Should().Contain(awayTeamName1);
                     result.Should().Be(
-                        $"1. {homeTeamName} {1} - {awayTeamName} {1}{Environment.NewLine}" +
-                        $"2. {homeTeamName1} {2} - {awayTeamName1} {2}{Environment.NewLine}");
+                        $"1. {homeTeamName1} {1} - {awayTeamName1} {1}{Environment.NewLine}" +
+                        $"2. {homeTeamName} {1} - {awayTeamName} {1}{Environment.NewLine}");
                 }
             }
         }

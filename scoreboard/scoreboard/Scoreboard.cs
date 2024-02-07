@@ -1,4 +1,5 @@
 ﻿using Scoreboard.Models;
+using System.Text;
 
 namespace Scoreboard
 {
@@ -30,7 +31,8 @@ namespace Scoreboard
                 homeTeamName = homeTeamName,
                 homeTeamScore = 0,
                 awayTeamName = awayTeamName,
-                awayTeamScore = 0
+                awayTeamScore = 0,
+                dateAdded = DateTime.Now
             });
 
             return true;
@@ -78,7 +80,20 @@ namespace Scoreboard
 
         public string GetSummaryOfMatches()
         {
-            throw new NotSupportedException();
+            var sb = new StringBuilder();
+            var position = 1;
+
+            var orderedMatches = matches
+                .OrderByDescending(x => x.homeTeamScore + x.awayTeamScore)
+                .ThenByDescending(x => x.dateAdded); 
+
+            foreach (var match in orderedMatches)
+            {
+                sb.AppendLine($"{position}. {match.homeTeamName} {match.homeTeamScore} - {match.awayTeamName} {match.awayTeamScore}");
+                position++;
+            }
+
+            return sb.ToString();
         }
     }
 }

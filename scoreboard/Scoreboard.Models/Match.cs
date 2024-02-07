@@ -6,5 +6,6 @@
         public int homeTeamScore { get; set; } = 0;
         public required string awayTeamName { get; set; }
         public int awayTeamScore { get; set; } = 0;
+        public DateTime dateAdded { get; set; }
     }
 }
