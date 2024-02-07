@@ -64,7 +64,7 @@ namespace Scoreboard
 
         public bool FinishMatch(string homeTeamName, string awayTeamName)
         {
-            throw new NotImplementedException();
+            var match = matches.FirstOrDefault(x => x.homeTeamName == homeTeamName && x.awayTeamName == awayTeamName);
         }
 
         public IEnumerable<Match> GetSummaryOfMatches()
