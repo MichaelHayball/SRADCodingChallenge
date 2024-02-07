@@ -76,7 +76,7 @@ namespace Scoreboard
             return true;
         }
 
-        public IEnumerable<Match> GetSummaryOfMatches()
+        public string GetSummaryOfMatches()
         {
             throw new NotSupportedException();
         }
