@@ -65,6 +65,15 @@ namespace Scoreboard
         public bool FinishMatch(string homeTeamName, string awayTeamName)
         {
             var match = matches.FirstOrDefault(x => x.homeTeamName == homeTeamName && x.awayTeamName == awayTeamName);
+
+            if (match is null)
+            {
+                throw new ArgumentException("Match Not Found");
+            }
+
+            matches.Remove(match);
+
+            return true;
         }
 
         public IEnumerable<Match> GetSummaryOfMatches()
