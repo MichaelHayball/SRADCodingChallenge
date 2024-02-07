@@ -38,9 +38,7 @@ namespace Scoreboard.Tests
                 // Assert
                 using (new AssertionScope())
                 {
-                    action.Should().NotThrow();
-                    var result = action.Invoke();
-                    result.Should().BeTrue();
+                    action.Should().NotThrow().Which.Should().BeTrue();
                 }
             }
 

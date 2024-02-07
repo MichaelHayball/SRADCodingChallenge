@@ -20,6 +20,11 @@ namespace Scoreboard
             if (string.Equals(homeTeamName.Trim(), awayTeamName.Trim(), StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("homeTeamName cannot be the same as awayTeamName");
 
+            if (matches.Any(x => x.awayTeamName == awayTeamName || x.homeTeamName == awayTeamName))
+                throw new InvalidOperationException($"team {awayTeamName} is already in play");
+            if (matches.Any(x => x.awayTeamName == homeTeamName || x.homeTeamName == homeTeamName))
+                throw new InvalidOperationException($"team {homeTeamName} is already in play");
+
             matches.Add(new Match
             {
                 homeTeamName = homeTeamName,
