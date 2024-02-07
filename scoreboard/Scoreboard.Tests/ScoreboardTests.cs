@@ -4,6 +4,7 @@ using AutoFixture.Xunit2;
 using FluentAssertions.Execution;
 using FluentAssertions;
 using Xunit;
+using Scoreboard.Models;
 
 namespace Scoreboard.Tests
 {
@@ -15,11 +16,6 @@ namespace Scoreboard.Tests
         public ScoreboardTests()
         {
             _fixture = new Fixture().Customize(new AutoMoqCustomization());
-            CreateTestObject();
-        }
-
-        private void CreateTestObject()
-        {
             _objectToTest = _fixture.Build<Scoreboard>().Create();
         }
 
@@ -245,11 +241,59 @@ namespace Scoreboard.Tests
             {
 
             }
+
+            [Theory, AutoData]
+            public void GetSummaryOfMatches_Returns_Match_In_String_As_Expected(string homeTeamName, string awayTeamName, int homeTeamScore, int awayTeamScore)
+            {
+                // Arrange
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+                _objectToTest.UpdateScore(homeTeamName, homeTeamScore, awayTeamName, awayTeamScore);
+
+                // Act
+
+                var result = _objectToTest.GetSummaryOfMatches();
+                // Assert
+                using(new AssertionScope())
+                {
+                    result.Should().NotBeNullOrWhiteSpace();
+                    result.Should().Contain(homeTeamName);
+                    result.Should().Contain(awayTeamName);
+                    result.Should().Be($"{homeTeamName} {1} - {awayTeamName} {awayTeamScore}{Environment.NewLine}");
+                }
+            }
+
+            [Theory, AutoData]
+            public void GetSummaryOfMatches_Returns_Multiple_Matches_In_String_As_Expected(string homeTeamName, string awayTeamName,
+                string homeTeamName1, string awayTeamName1)
+            {
+                // Arrange
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+                _objectToTest.CreateMatch(homeTeamName1, awayTeamName1);
+
+                _objectToTest.UpdateScore(homeTeamName, 1, awayTeamName, 1);
+                _objectToTest.UpdateScore(homeTeamName1, 1, awayTeamName1, 1);
+
+                // Act
+
+                var result = _objectToTest.GetSummaryOfMatches();
+                // Assert
+                using (new AssertionScope())
+                {
+                    result.Should().NotBeNullOrWhiteSpace();
+                    result.Should().Contain(homeTeamName);
+                    result.Should().Contain(awayTeamName);
+                    result.Should().Contain(homeTeamName1);
+                    result.Should().Contain(awayTeamName1);
+                    result.Should().Be(
+                        $"1. {homeTeamName} {1} - {awayTeamName} {1}{Environment.NewLine}" +
+                        $"2. {homeTeamName1} {2} - {awayTeamName1} {2}{Environment.NewLine}");
+                }
+            }
         }
 
-        public class FeatureAcceptanceTests : ScoreboardTests
+        public class FeatureAcceptanceTest : ScoreboardTests
         {
-            public FeatureAcceptanceTests()
+            public FeatureAcceptanceTest()
             {
 
             }
