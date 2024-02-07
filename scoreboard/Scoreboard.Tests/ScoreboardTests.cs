@@ -157,7 +157,7 @@ namespace Scoreboard.Tests
             {
                 // Arrange
                 // Act
-                var action = () => _objectToTest.UpdateScore(awayTeamName, 1, awayTeamName, 0);
+                var action = () => _objectToTest.UpdateScore(homeTeamName, 1, awayTeamName, 0);
 
                 // Assert
                 using (new AssertionScope())
