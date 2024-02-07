@@ -297,6 +297,51 @@ namespace Scoreboard.Tests
             {
 
             }
+
+            [Fact]
+            public void ScoreBoard_Manages_Matches_As_Expected()
+            {
+                // Arrange
+                // Create MAtches in example Order.
+                _objectToTest.CreateMatch("Mexico", "Canada");
+                _objectToTest.CreateMatch("Spain", "Brazil");
+                _objectToTest.CreateMatch("Germany", "France");
+                _objectToTest.CreateMatch("Uruguay", "Italy");
+                _objectToTest.CreateMatch("Argentina", "Australia");
+
+                // Update Matches Accordingly.  
+                _objectToTest.UpdateScore("Mexico", 0, "Canada", 5);
+                _objectToTest.UpdateScore("Spain", 10, "Brazil", 2);
+                _objectToTest.UpdateScore("Germany", 2, "France", 2);
+                _objectToTest.UpdateScore("Uruguay", 6, "Italy", 6);
+                _objectToTest.UpdateScore("Argentina", 3, "Australia", 1);
+
+                // Act
+                var resultBefore = _objectToTest.GetSummaryOfMatches();
+
+                // Finish One match and update another
+                _objectToTest.FinishMatch("Mexico", "Canada");
+                _objectToTest.UpdateScore("Germany", 5, "France", 5);
+
+                var resultAfter = _objectToTest.GetSummaryOfMatches();
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    resultBefore.Should().Be(
+                        $"1. Uruguay 6 - Italy 6{Environment.NewLine}" +
+                        $"2. Spain 10 - Brazil 2{Environment.NewLine}" +
+                        $"3. Mexico 0 - Canada 5{Environment.NewLine}" +
+                        $"4. Argentina 3 - Australia 1{Environment.NewLine}" +
+                        $"5. Germany 2 - France 2{Environment.NewLine}");
+
+                    resultAfter.Should().Be(
+                        $"1. Uruguay 6 - Italy 6{Environment.NewLine}" +
+                        $"2. Spain 10 - Brazil 2{Environment.NewLine}" +
+                        $"3. Germany 5 - France 5{Environment.NewLine}" +
+                        $"4. Argentina 3 - Australia 1{Environment.NewLine}");
+                }
+            }
         }
     }
 }
