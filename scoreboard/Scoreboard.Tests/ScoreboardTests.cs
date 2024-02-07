@@ -82,7 +82,7 @@ namespace Scoreboard.Tests
             [InlineAutoData("Team A", " Team A ")]
             [InlineAutoData("Team A", "Team a")]
             [InlineAutoData("Team A", "team A")]
-            public void CreateMatch_Returns_ArgumentException_When_TemaNames_Match_Regardless_of_WhiteSpace(string homeTeamName, string awayTeamName)
+            public void CreateMatch_Returns_ArgumentException_When_Team_Names_Match_Regardless_of_WhiteSpace(string homeTeamName, string awayTeamName)
             {
                 // Arrange
                 // Act
@@ -92,6 +92,40 @@ namespace Scoreboard.Tests
                 {
                     action.Should().Throw<ArgumentException>()
                         .WithMessage("homeTeamName cannot be the same as awayTeamName");
+                }
+            }
+
+            [Theory, AutoData]
+            public void CreateMatch_returns_InvalidOperationException_When_HomeTeam_Is_Already_Playing(string homeTeamName, string awayTeamName, string otherTeamName)
+            {
+                // Arrange
+                // Create Initial Instance of Match.
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+
+                // Act
+                var action = () => _objectToTest.CreateMatch(homeTeamName, otherTeamName);
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().Throw<InvalidOperationException>()
+                        .WithMessage($"team {homeTeamName} is already in play");
+                }
+            }
+
+            [Theory, AutoData]
+            public void CreateMatch_returns_InvalidOperationException_When_AwayTeam_Is_Already_Playing(string homeTeamName, string awayTeamName, string otherTeamName)
+            {
+                // Arrange
+                // Create Initial Instance of Match.
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+
+                // Act
+                var action = () => _objectToTest.CreateMatch(otherTeamName, awayTeamName);
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().Throw<InvalidOperationException>()
+                        .WithMessage($"team {awayTeamName} is already in play");
                 }
             }
         }
