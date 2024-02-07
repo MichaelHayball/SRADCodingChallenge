@@ -134,6 +134,73 @@ namespace Scoreboard.Tests
             {
 
             }
+
+
+            [Theory, AutoData]
+            public void UpdateMatch_Updates_Match_Ok(string homeTeamName, string awayTeamName, int homeTeamScore, int awayTeamScore)
+            {
+                // Arrange
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+
+                // Act
+                var action = () => _objectToTest.UpdateScore(homeTeamName, homeTeamScore, awayTeamName, awayTeamScore);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().NotThrow().Which.Should().BeTrue();
+                }
+            }
+
+            [Theory, AutoData]
+            public void UpdateMatch_Throws_ArgumentException_When_Match_Not_Found(string homeTeamName, string awayTeamName)
+            {
+                // Arrange
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+
+                // Act
+                var action = () => _objectToTest.UpdateScore(awayTeamName, 1, awayTeamName, 0);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().Throw<ArgumentException>().WithMessage("Match Not Found");
+                }
+            }
+
+
+            [Theory, AutoData]
+            public void UpdateMatch_Throws_ArgumentException_When_Any_Score_Is_Negative(string homeTeamName, string awayTeamName)
+            {
+                // Arrange
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+
+                // Act
+                var action = () => _objectToTest.UpdateScore(awayTeamName, -1, awayTeamName, 0);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().Throw<ArgumentException>().WithMessage("Scores cannot Be Negative");
+                }
+            }
+
+            [Theory, AutoData]
+            public void UpdateMatch_Throws_ArgumentException_When_Score_will_Go_down(string homeTeamName, string awayTeamName)
+            {
+                // Arrange
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+                _objectToTest.UpdateScore(homeTeamName, 1, awayTeamName, 0);
+
+                // Act
+                var action = () => _objectToTest.UpdateScore(awayTeamName, 0, awayTeamName, 0);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().Throw<ArgumentException>().WithMessage("Scores Cannot be decreased");
+                }
+            }
         }
 
         public class FinishMatchTests : ScoreboardTests
