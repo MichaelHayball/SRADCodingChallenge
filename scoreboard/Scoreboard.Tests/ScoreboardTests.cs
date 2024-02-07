@@ -135,7 +135,6 @@ namespace Scoreboard.Tests
 
             }
 
-
             [Theory, AutoData]
             public void UpdateMatch_Updates_Match_Ok(string homeTeamName, string awayTeamName, int homeTeamScore, int awayTeamScore)
             {
@@ -205,7 +204,38 @@ namespace Scoreboard.Tests
         {
             public FinishMatchTests()
             {
+                
+            }
 
+            [Theory, AutoData]
+            public void FinishMatch_Removes_Match_Ok(string homeTeamName, string awayTeamName)
+            {
+                // Arrange
+                _objectToTest.CreateMatch(homeTeamName, awayTeamName);
+
+                // Act
+                var action = () => _objectToTest.FinishMatch(homeTeamName, awayTeamName);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().NotThrow().Which.Should().BeTrue();
+                }
+            }
+
+            [Theory, AutoData]
+            public void FinishMatch_Throws_ArgumentException_When_Match_Not_Found(string homeTeamName, string awayTeamName)
+            {
+                // Arrange
+
+                // Act
+                var action = () => _objectToTest.FinishMatch(homeTeamName, awayTeamName);
+
+                // Assert
+                using (new AssertionScope())
+                {
+                    action.Should().Throw<ArgumentException>().WithMessage("Match Not Found");
+                }
             }
         }
 
