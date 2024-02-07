@@ -56,7 +56,7 @@ namespace Scoreboard.Tests
                 using ( new AssertionScope())
                 {
                     action.Should().Throw<ArgumentNullException>()
-                        .WithMessage("homeTeamName cannot be null or empty");
+                        .WithMessage("homeTeamName cannot be null or empty (Parameter 'homeTeamName')");
                 }
             }
 
@@ -72,7 +72,7 @@ namespace Scoreboard.Tests
                 using (new AssertionScope())
                 {
                     action.Should().Throw<ArgumentNullException>()
-                        .WithMessage("awayTeamName cannot be null or empty");
+                        .WithMessage("awayTeamName cannot be null or empty (Parameter 'awayTeamName')");
                 }
             }
 
